@@ -1,0 +1,35 @@
+{
+    "name": "icron/yii2-confirm-widget",
+    "description": "Yii2 Confirm Widget (e.g. SMS)",
+    "keyworks": [
+        "yii",
+        "yii2",
+        "yii 2",
+        "widget",
+        "confirm"
+    ],
+    "type": "yii2-extension",
+    "lincese": "BSD",
+    "homepage": "https://github.com/icron/yii2-confirm-widget",
+    "authors": [
+        {
+            "name": "Alexander L",
+            "email": "mentor@icron.org"
+        },
+        {
+            "name": "Vitalya Kudla",
+        }
+    ],
+    "require": {
+        "yiisoft/yii2":"~2.0.0",
+        "yiisoft/yii2-bootstrap":"~2.0.0"
+    },
+    "require-dev": {
+        "phpunit/unit":"4.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "icron\\yii2-confirm-widget\\" : "src"
+        }
+    }
+}
