@@ -29,7 +29,7 @@
     },
     "autoload": {
         "psr-4": {
-            "icron\\yii2-confirm-widget\\" : "src"
+            "icron\\confirm\\" : "src"
         }
     }
 }
