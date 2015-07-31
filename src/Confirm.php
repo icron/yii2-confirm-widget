@@ -3,13 +3,34 @@ namespace icron\confirm;
 
 use icron\confirm\providers\IProvider;
 use yii\base\Component;
+use yii\base\InvalidCallException;
+use yii\base\InvalidConfigException;
 
 class Confirm extends Component
 {
-    const SESSION_ID = '';
+    const SESSION_ID = 'icron\confirm';
+    const STATUS_CONFIRMED = 'confirmed'; // Подтверждено
+    const STATUS_PENDING = 'pending'; // В ожидании
+
     public $provider;
+
+    public $limitCountSend = 10;
+    public $repeatInterval = 15; // sec
     /** @var  IProvider */
     private $_provider;
+
+    public function init()
+    {
+        if (!$this->provider) {
+            throw new InvalidConfigException('Provider must be declared.');
+        }
+        $this->_provider = \Yii::createObject($this->provider);
+    }
+
+    public function getConfirm($destination, $code)
+    {
+
+    }
 
     public function generateCode($length = 4)
     {
@@ -24,27 +45,85 @@ class Confirm extends Component
 
     public function send($destination)
     {
-        //TODO Real data
-        $destinationData = []; // Получение данных из сессии по $destination
-        //TODO Real data
-        $codes = []; // коды из сесси
+        $destinationData = $this->getDestinationData($destination);
         $data['last_send'] = date('Y-m-d H:i:s');
         $countSend = isset($destinationData['count_send']) ? $destinationData['count_send'] : 0;
         $data['count_send'] = $countSend + 1;
-        $data['status'] = '';
+        $data['status'] = self::STATUS_PENDING;
         $code = $this->generateCode();
         if ($this->_provider->send($destination, $code)) {
-            $data['codes'] = array_merge($codes, [$code]);
-            //TODO Save data to session
+            $data['codes'] = array_merge($this->getCodes($destination), [$code]);
+            $this->setSessionData($data, $destination);
             return true;
         }
-        //TODO Update data session
+
+        $this->setSessionData($data, $destination);
         return false;
     }
 
     // TODO метод подтверждения кода confirm
 
-    // TODO Вспомогтальеные методы getCodes
-    //
+    /**
+     * Checks valid codes
+     * @param $destination
+     * @param $code
+     * @return bool
+     */
+    public function checkCode($destination, $code)
+    {
+        return in_array($code, $this->getCodes($destination));
+    }
+    public function getStatus($destination)
+    {
+        $data = $this->getDestinationData($destination);
+        return $data['status'];
+    }
+    public function getCodes($destination)
+    {
+        $data = $this->getDestinationData($destination);
+        return isset($data['codes']) ? $data['codes'] : [];
+    }
+    public function getDestinationData($destination)
+    {
+        $data = $this->getSessionData();
+        return isset($data[$destination]) ? $data[$destination] : [];
+    }
+    /**
+     * Gets session data with following format
+     * ```php
+     * [
+     * '<destination_1>' => [
+     *      'codes' => [1234],
+     *      'status' => 'confirmed',
+     *      'last_send' => '2014-01-01 12:11:11',
+     *      'count_send' => 10,
+     * ],
+     * //...
+     * ]
+     * ```
+     * @return mixed
+     */
+    protected function getSessionData()
+    {
+        return $this->getSession()->get(self::SESSION_ID, []);
+    }
+
+    protected function setSessionData($data, $destination = null)
+    {
+        if ($destination) {
+            $destinationData = $this->getDestinationData($destination);
+            $destinationData = array_merge($destinationData, $data);
+            $this->getSession()->set(self::SESSION_ID, [$destination => $destinationData]);
+        } else {
+            $this->getSession()->set(self::SESSION_ID, $data);
+        }
+    }
+    /**
+     * @return \yii\web\Session
+     */
+    public function getSession()
+    {
+        return \Yii::$app->getSession();
+    }
 }
  

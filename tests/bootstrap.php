@@ -10,6 +10,8 @@ new \yii\console\Application([
         'vendorPath' => __DIR__ . '/../vendor',
         'components' => [
             //'assetManager' => [],
-            // 'session' =>
+             'session' => [
+                'class' => 'tests\Session',
+             ],
         ],
     ]);
