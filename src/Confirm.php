@@ -52,6 +52,7 @@ class Confirm extends Component
 
     public function send($destination)
     {
+        $data = [];
         $destinationData = $this->getDestinationData($destination);
         $data['last_send'] = date('Y-m-d H:i:s');
         $countSend = isset($destinationData['count_send']) ? $destinationData['count_send'] : 0;
