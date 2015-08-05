@@ -27,9 +27,16 @@ class Confirm extends Component
         $this->_provider = \Yii::createObject($this->provider);
     }
 
-    public function getConfirm($destination, $code)
+    public function confirm($destination, $code)
     {
+        $data = [];
+        if (in_array($code, $this->getCodes($destination))) {
+            $data['status'] = self::STATUS_CONFIRMED;
+            $this->setSessionData($data, $destination);
+            return true;
+        }
 
+        return false;
     }
 
     public function generateCode($length = 4)

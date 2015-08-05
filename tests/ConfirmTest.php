@@ -25,21 +25,36 @@ class ConfirmTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($output, $data1['count_send'], 'Неверный count_send.');
     }
 
-    public function testConfirm()
-    {
-        $confirm = $this->getConfirm();
-        $destination = '123';
-        $confirm->send($destination);
-        $codes = $confirm->getCodes($destination);
-        $this->assertTrue($this->getConfirm($destination, reset($codes)));
-    }
-
     public function sendDataProvider()
     {
-       return [
-           ['79297058409', 2], // Данные 1
-           ['79263324399', 2], // Данные 2
-       ];
+        return [
+            ['79297058409', 2], // Данные 1
+            ['79263324399', 2], // Данные 2
+        ];
+    }
+
+    /**
+     * @dataProvider providerSendConfirm
+     * @param $destination
+     */
+    public function testConfirm($destination)
+    {
+        $confirm = $this->getConfirm();
+        $confirm->send($destination);
+        $confirm->send($destination);
+        $codes = $confirm->getCodes($destination);
+        $this->assertEquals(2, count($codes));
+        foreach ($codes as $code) {
+            $this->assertTrue($confirm->confirm($destination, $code));
+        }
+    }
+
+    public function providerSendConfirm()
+    {
+        return [
+            ['79297058409'], // Данные 1
+            ['79263324399'], // Данные 2
+        ];
     }
 
     /**
