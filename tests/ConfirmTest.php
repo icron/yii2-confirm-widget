@@ -57,6 +57,32 @@ class ConfirmTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
+    public function testCheckCode()
+    {
+        $destination = '79297058409';
+        $confirm = $this->getConfirm();
+        $confirm->send($destination);
+        $confirm->send($destination);
+        $codes = $confirm->getCodes($destination);
+        $this->assertEquals(2, count($codes));
+        foreach ($codes as $code) {
+            $this->assertTrue($confirm->checkCode($destination, $code));
+        }
+    }
+
+    public function testGetStatus()
+    {
+        $destination = '79297058409';
+        $confirm = $this->getConfirm();
+        $confirm->send($destination);
+        $confirm->send($destination);
+        $codes = $confirm->getCodes($destination);
+        $this->assertEquals(2, count($codes));
+        $this->assertEquals(Confirm::STATUS_PENDING, $confirm->getStatus($destination));
+        $this->assertTrue($confirm->confirm($destination, reset($codes)));
+        $this->assertEquals(Confirm::STATUS_CONFIRMED, $confirm->getStatus($destination));
+    }
+
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject | Confirm
      * @throws \yii\base\InvalidConfigException
