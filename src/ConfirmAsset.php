@@ -4,11 +4,12 @@ namespace icron\confirm;
 use yii\web\AssetBundle;
 
 class ConfirmAsset extends AssetBundle {
+    public $sourcePath = '@vendor/icron/yii2-confirm-widget/src/assets';
     public $css = [
-        'assets/css/style.css'
+        'css/style.css'
     ];
     public $js = [
-        'assets/js/jquery.confirm.js'
+        'js/jquery.confirm.js'
     ];
 
     public $depends = [

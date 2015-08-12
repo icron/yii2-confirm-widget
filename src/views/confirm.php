@@ -11,7 +11,7 @@
                         </div>
                     </form>
                 </div>
-                <small class="promise"><em>We won't send spam.</em></small>
+                <small class="promise"><em>...</em></small>
             </div>
         </div>
     </div>

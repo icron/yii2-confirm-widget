@@ -5,6 +5,7 @@ use icron\confirm\providers\IProvider;
 use yii\base\Component;
 use yii\base\InvalidCallException;
 use yii\base\InvalidConfigException;
+use yii\di\ServiceLocator;
 
 class Confirm extends Component
 {
@@ -131,7 +132,7 @@ class Confirm extends Component
      */
     public function getSession()
     {
-        return \Yii::$app->getSession();
+        return \Yii::$app->get('session');
     }
 }
  

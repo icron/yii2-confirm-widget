@@ -13,5 +13,12 @@ new \yii\console\Application([
              'session' => [
                 'class' => 'tests\Session',
              ],
+            'response' => [
+                'class' => 'tests\Response'
+            ],
+            'confirm' => [
+                'class' => 'icron\confirm\Confirm',
+                'provider' => '\tests\TestProvider',
+            ],
         ],
     ]);
