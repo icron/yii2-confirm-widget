@@ -18,6 +18,7 @@ class ConfirmAction extends Action
             case self::METHOD_SEND:
                 if ($this->getConfirm()->send($destination)) {
                     $result['status'] = self::STATUS_SUCCESS;
+                    $result['message'] = 'Код успешно отправлен ' .( YII_DEBUG ? reset($this->getConfirm()->getCodes($destination)) : '');
                 } else {
                     $result['message'] = 'Ошибка отправки сообщения';
                 }
@@ -26,6 +27,7 @@ class ConfirmAction extends Action
                 // TODO check code
                 if ($this->getConfirm()->confirm($destination, $code)) {
                     $result['status'] = self::STATUS_SUCCESS;
+                    $result['message'] = 'Код успешно подтвержден';
                 } else {
                     $result['message'] = 'Ошибка подтверждения кода';
                 }

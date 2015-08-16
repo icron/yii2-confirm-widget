@@ -9,7 +9,7 @@ class ConfirmAsset extends AssetBundle {
         'css/style.css'
     ];
     public $js = [
-        'js/jquery.confirm.js'
+        'js/jquery.jconfirm.js'
     ];
 
     public $depends = [
