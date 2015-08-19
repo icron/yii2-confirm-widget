@@ -3,9 +3,8 @@ namespace icron\confirm;
 
 use icron\confirm\providers\IProvider;
 use yii\base\Component;
-use yii\base\InvalidCallException;
 use yii\base\InvalidConfigException;
-use yii\di\ServiceLocator;
+use yii\helpers\ArrayHelper;
 
 class Confirm extends Component
 {
@@ -97,6 +96,20 @@ class Confirm extends Component
         $data = $this->getSessionData();
         return isset($data[$destination]) ? $data[$destination] : [];
     }
+
+    public function getConfirmedDestinations()
+    {
+        $destinations = [];
+        $data = $this->getSessionData();
+        foreach ($data as $destination => $item) {
+            if ($item['status'] == self::STATUS_CONFIRMED) {
+                $destinations[] = $destination;
+            }
+        }
+
+        return $destinations;
+    }
+
     /**
      * Gets session data with following format
      * ```php
@@ -122,11 +135,13 @@ class Confirm extends Component
         if ($destination) {
             $destinationData = $this->getDestinationData($destination);
             $destinationData = array_merge($destinationData, $data);
-            $this->getSession()->set(self::SESSION_ID, [$destination => $destinationData]);
+            $oldSessionData =  $this->getSession()->get(self::SESSION_ID, []);
+            $this->getSession()->set(self::SESSION_ID, ArrayHelper::merge($oldSessionData, [$destination => $destinationData]));
         } else {
             $this->getSession()->set(self::SESSION_ID, $data);
         }
     }
+
     /**
      * @return \yii\web\Session
      */

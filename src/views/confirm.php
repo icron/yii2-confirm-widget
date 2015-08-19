@@ -7,8 +7,8 @@
                         <div class="input-group">
                             <?= $field ?>
                             <button class="btn btn-info btn-lg btn-send first">Отправить</button>
-                            <button class="btn btn-info btn-lg btn-confirm">Подтвердить</button>
                             <input class="btn btn-lg input-code" />
+                            <button class="btn btn-info btn-lg btn-confirm">Подтвердить</button>
                         </div>
                     </form>
                 </div>

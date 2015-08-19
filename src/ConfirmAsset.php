@@ -14,6 +14,7 @@ class ConfirmAsset extends AssetBundle {
 
     public $depends = [
         '\yii\web\JQueryAsset',
+        '\icron\confirm\JQueryCookieAsset',
         '\yii\bootstrap\BootstrapAsset',
     ];
 }
