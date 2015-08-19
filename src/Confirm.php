@@ -27,6 +27,12 @@ class Confirm extends Component
         $this->_provider = \Yii::createObject($this->provider);
     }
 
+    /**
+     * Confirm destination.
+     * @param $destination
+     * @param $code
+     * @return bool
+     */
     public function confirm($destination, $code)
     {
         $data = [];
@@ -68,8 +74,6 @@ class Confirm extends Component
         $this->setSessionData($data, $destination);
         return false;
     }
-
-    // TODO метод подтверждения кода confirm
 
     /**
      * Checks valid codes
