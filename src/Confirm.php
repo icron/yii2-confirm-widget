@@ -139,8 +139,9 @@ class Confirm extends Component
         if ($destination) {
             $destinationData = $this->getDestinationData($destination);
             $destinationData = array_merge($destinationData, $data);
-            $oldSessionData =  $this->getSession()->get(self::SESSION_ID, []);
-            $this->getSession()->set(self::SESSION_ID, ArrayHelper::merge($oldSessionData, [$destination => $destinationData]));
+            $sessionData =  $this->getSession()->get(self::SESSION_ID, []);
+            $sessionData[$destination] = $destinationData;
+            $this->getSession()->set(self::SESSION_ID, $sessionData);
         } else {
             $this->getSession()->set(self::SESSION_ID, $data);
         }
