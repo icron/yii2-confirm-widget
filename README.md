@@ -9,7 +9,16 @@
 # yii2-confirm-widget
 Yii2 Confirm Widget (e.g. SMS)
 
-For example:
+For example,
+```php
+'components' => [
+        'confirm' => [
+            'class' => 'icron\confirm\Confirm',
+            'provider' => 'app\components\providers\ProstorSMS',
+        ],
+ ],
+```
+
 ```php
 \icron\confirm\ConfirmWidget::widget([
             'model' => (new \app\models\TestModel()),
