@@ -27,9 +27,20 @@ For example:
                 'confirm.ic.modal' => 'function(e){
                     var data = e.confirmData || {};
                     console.log(e.confirmData);
-                    document.location.href = "' . \yii\helpers\Url::toRoute('site/private') . '";
+                    if (data["status"] == "success") {
+                        document.location.href = "' . \yii\helpers\Url::toRoute('site/private') . '";
+                    }
 
                 }',
             ],
         ]); 
+```
+
+```php
+    public function actionPrivate()
+    {
+        /** @var Confirm $confirm */
+        $confirm = Yii::$app->confirm;
+        return $this->render('private', ['items' => $confirm->getConfirmedDestinations()]);
+    }
 ```
