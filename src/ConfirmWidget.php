@@ -41,10 +41,8 @@ class ConfirmWidget extends InputWidget
         $view = $this->getView();
         ConfirmAsset::register($view);
         $id = $this->options['id'];
-        // ['a' => 1]
-        // {'a' : 1}
         $options = !empty($this->clientOptions) ? Json::encode($this->clientOptions) : '';
-        $js[] = ";jQuery('#$id').jconfirm({$options});";
+        $js = [";jQuery('#$id').jconfirm({$options});"];
         if (!empty($this->clientEvents)) {
             foreach ($this->clientEvents as $event => $handler) {
                 $js[] = ";jQuery('#$id').on('$event', $handler);";
