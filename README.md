@@ -7,7 +7,7 @@
 
 # yii2-confirm-widget
 Yii2 Confirm Widget (e.g. SMS)
-
+![Example](/docs/images/screenshot.png?raw=true "Example")
 For example,
 ```php
 'components' => [
